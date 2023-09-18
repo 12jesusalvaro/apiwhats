@@ -29,5 +29,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/sendMessage', [WhatsController::class, 'sendMessage']);
+Route::get('/chatindex', [WhatsController::class, 'index'])->name('chat.index');
+Route::post('/sendMessage', [WhatsController::class, 'sendMessage'])->name('chat.send');
+
+Route::get('/chats', [WhatsController::class, 'index'])->name('chats.index');
+Route::get('/chats/{id}', [WhatsController::class, 'show'])->name('chats.show');
+
 require __DIR__.'/auth.php';
