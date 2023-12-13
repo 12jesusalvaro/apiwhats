@@ -51,51 +51,84 @@
             </div>
             @endif
             <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            Add Phone Number
-                        </div>
-                        <div class="card-body">
-                            <form method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label>Enter Phone Number</label>
-                                    <input type="tel" class="form-control" name="phone_number" placeholder="Enter Phone Number">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Register User</button>
-                            </form>
-                        </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Add Phone Number
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label>Enter Phone Number</label>
+                        <input type="tel" class="form-control" name="phone_number" placeholder="Enter Phone Number">
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            Send SMS message
-                        </div>
-                        <div class="card-body">
-                            <form method="POST" action="{{route('chat.send')  }}">
-                                @csrf
-                                <div class="form-group">
-                                    <label>Select users to notify</label>
-                                    <select name="users" multiple class="form-control">
-                                        @foreach ($users as $user)
-                                        <option value="{{ $user->phone_number }}">{{ $user->phone_number }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Notification Message</label>
-                                    <textarea name="body" class="form-control" rows="3"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Send Notification</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-primary">Register User</button>
+                </form>
             </div>
         </div>
     </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Select Message Type
+            </div>
+            <div class="card-body">
+                <form method="POST" id="messageForm" action="{{ route('chat.send') }}">
+                    @csrf
+
+                    <div class="form-group">
+                        <label>Select Message Type</label>
+                        <select name="message_type" id="messageType" class="form-control" onchange="mostrarCampo(this.value)">
+                            <option value="Texto">Texto</option>
+                            <option value="Imagen">Imagen</option>
+                            <option value="Pdf">Pdf</option>
+                            <option value="Template">Template</option>
+                            <option value="Ubicación">Ubicación</option>
+                            <option value="Contactos">Contactos</option>
+                            <option value="Interactivos">Interactivos</option>
+
+                        </select>
+                    </div>
+
+                    <div id="campoTexto" style="display: none;">
+                        <label for="texto">Texto:</label>
+                        <input type="text" name="texto" id="texto" class="form-control">
+                    </div>
+
+                    <div id="campoMultimedia" style="display: none;">
+                        <label for="archivo">Seleccionar archivo:</label>
+                        <input type="file" name="archivo" id="archivo" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select users to notify</label>
+                        <select name="users" multiple class="form-control">
+                            @foreach ($users as $user)
+                            <option value="{{ $user->phone_number }}">{{ $user->phone_number }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Notification</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function mostrarCampo(opcion) {
+        document.getElementById('campoTexto').style.display = 'none';
+        document.getElementById('campoMultimedia').style.display = 'none';
+
+        if (opcion === 'Texto') {
+            document.getElementById('campoTexto').style.display = 'block';
+        } else if (opcion === 'Contenido multimedia') {
+            document.getElementById('campoMultimedia').style.display = 'block';
+        }
+        // Agrega más condiciones para otras opciones
+    }
+</script>
 </body>
 </html>
 

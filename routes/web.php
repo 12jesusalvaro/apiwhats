@@ -15,10 +15,13 @@ use App\Http\Controllers\WhatsController;
 |
 */
 
+Route::get('/', [WhatsController::class, 'index'])->name('chats.index');
+
+/*
 Route::get('/', function () {
     return view('welcome');
 });
-
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -29,10 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/chatindex', [WhatsController::class, 'index'])->name('chat.index');
+//Route::get('/chatindex', [WhatsController::class, 'index'])->name('chat.index');
 Route::post('/sendMessage', [WhatsController::class, 'sendMessage'])->name('chat.send');
-
-Route::get('/chats', [WhatsController::class, 'index'])->name('chats.index');
+Route::get('/recibeMessage',[WhatsController::class, 'recibeMessage'])->name('chat.recibe');
+//Route::get('/chats', [WhatsController::class, 'index'])->name('chats.index');
 Route::get('/chats/{id}', [WhatsController::class, 'show'])->name('chats.show');
+
+//routes of youtube verifyWebhook
+Route::post('/send-message', [WhatsController::class, 'sendMessage'])->name('chat.send');
+Route::get('/whatsaap-webhook', [WhatsController::class, 'verifyWebhook']);
+Route::post('/whatsaap-webhook', [WhatsController::class, 'processWebhook']);
 
 require __DIR__.'/auth.php';
